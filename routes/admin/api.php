@@ -14,5 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-include 'admin/api.php';
 
+Route::prefix('admin')->group(function () {
+
+
+
+
+});
