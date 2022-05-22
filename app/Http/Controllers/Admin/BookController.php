@@ -13,7 +13,7 @@ class BookController extends Controller
 {
     public function index()
     {
-
+//        $books
     }
 
     public function show()
@@ -28,7 +28,7 @@ class BookController extends Controller
             'author' => 'required|min:3|max:20',
             'translator' => 'min:3|max:20',
             'description' => 'min:4|max:500',
-//            'book' =>
+            'book' => 'required|mimes:pdf|max:10000'
         ]);
         if ($validated_data->fails())
             return response()->json($validated_data->errors());
@@ -40,11 +40,13 @@ class BookController extends Controller
         Book::query()->create([
             'title' => $request->title,
             'author' => $request->author,
-            'translator' => $request->translator,
-            'description' => $request->description,
+            'translator' => $request->translator ?? null,
+            'description' => $request->description ?? null,
             'path' => $BookName,
         ]);
         DB::commit();
+
+        return response()->json(['data' => 'book saved']);
     }
 
     public function update()
