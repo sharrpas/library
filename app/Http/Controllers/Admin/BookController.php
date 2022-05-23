@@ -13,12 +13,16 @@ class BookController extends Controller
 {
     public function index()
     {
-//        $books
+        return Book::query()->paginate(10);
     }
 
-    public function show()
+    public function show(Book $book)
     {
-
+        return
+            [
+                'book' => $book,
+                'path' => Storage::url('books/' . $book->path)
+            ];
     }
 
     public function store(Request $request)

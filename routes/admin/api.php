@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('admin')->group(function () {
 
     Route::get('books',[BookController::class, 'index']);
-    Route::get('book',[BookController::class, 'show']);
+    Route::get('book/{book}',[BookController::class, 'show']);
     Route::post('book',[BookController::class, 'store']);
     Route::put('book',[BookController::class, 'update']);
     Route::delete('book',[BookController::class, 'destroy']);
