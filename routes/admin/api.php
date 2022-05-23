@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\BookController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,11 +19,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')->group(function () {
 
-    Route::get('books',[BookController::class, 'index']);
-    Route::get('book/{book}',[BookController::class, 'show']);
-    Route::post('book',[BookController::class, 'store']);
-    Route::put('book',[BookController::class, 'update']);
-    Route::delete('book',[BookController::class, 'destroy']);
+    Route::get('books',[BookController::class, 'index'])->middleware(['auth:sanctum','admin.auth:sanctum']);
+    Route::get('book/{book}',[BookController::class, 'show'])->middleware(['auth:sanctum','admin.auth:sanctum']);
+    Route::post('book',[BookController::class, 'store'])->middleware(['auth:sanctum','admin.auth:sanctum']);
+    Route::put('book',[BookController::class, 'update'])->middleware(['auth:sanctum','admin.auth:sanctum']);
+    Route::delete('book',[BookController::class, 'destroy'])->middleware(['auth:sanctum','admin.auth:sanctum']);
 
 
 });
