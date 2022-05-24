@@ -38,7 +38,6 @@ class BookController extends Controller
         if ($validated_data->fails())
             return response()->json($validated_data->errors());
 
-        DB::beginTransaction();
         $BookName = date('Ymdhis') . rand(100, 999) . '.pdf';
         Storage::putFileAs('books', $request->file('book'), $BookName);
 
@@ -49,18 +48,46 @@ class BookController extends Controller
             'description' => $request->description ?? null,
             'path' => $BookName,
         ]);
-        DB::commit();
 
-        return response()->json(['data' => 'book saved']);
+        return response()->json(['data' => 'ذخیره شد']);
     }
 
-    public function update()
+    public function update(Book $book, Request $request)
     {
+        $validated_data = Validator::make($request->all(), [
+            'title' => 'required|min:4|max:30',
+            'author' => 'required|min:3|max:20',
+            'translator' => 'min:3|max:20',
+            'description' => 'min:4|max:500',
+            'book' => 'mimes:pdf|max:10000'
+        ]);
+        if ($validated_data->fails())
+            return response()->json($validated_data->errors());
+
+        if ($request->hasFile('book')) {
+            Storage::delete('books/' . $book->path);
+            $BookName = date('Ymdhis') . rand(100, 999) . '.pdf';
+            Storage::putFileAs('books', $request->file('book'), $BookName);
+        } else {
+            $BookName = $book->path;
+        }
+
+        Book::query()->create([
+            'title' => $request->title,
+            'author' => $request->author,
+            'translator' => $request->translator ?? null,
+            'description' => $request->description ?? null,
+            'path' => $BookName,
+        ]);
+
+        return response()->json(['data' => 'ویرایش شد']);
 
     }
 
-    public function destroy()
+    public function destroy(Book $book)
     {
-
+        //Todo
+        Storage::delete('books/' . $book->path);
+        return response()->json(['data' => 'حذف شد']);
     }
 }
