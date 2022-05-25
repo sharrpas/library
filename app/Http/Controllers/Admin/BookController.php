@@ -86,7 +86,7 @@ class BookController extends Controller
 
     public function destroy(Book $book)
     {
-        //Todo
+        $book->delete();
         Storage::delete('books/' . $book->path);
         return response()->json(['data' => 'حذف شد']);
     }
