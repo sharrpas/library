@@ -54,6 +54,7 @@ class UserController extends Controller
         if ($user && $pass_check) {
             return response()->json([
                 'error' => false,
+                'data' => 'با موفقیت وارد شدید',
                 'token' => $user->createToken('token_base_name')->plainTextToken
             ]);
         } else {
