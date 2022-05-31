@@ -71,7 +71,7 @@ class UserController extends Controller
 
         $user->tokens()->delete();
 
-        return response()->json('logged out');
+        return response()->json(['data'=>'logged out']);
     }
 
 
