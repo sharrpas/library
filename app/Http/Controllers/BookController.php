@@ -10,7 +10,7 @@ class BookController extends Controller
 {
     public function index()
     {
-        return Book::query()->paginate(10);
+        return response()->json(Book::all());
     }
 
 }
