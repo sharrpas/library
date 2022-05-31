@@ -14,16 +14,17 @@ class BookController extends Controller
 {
     public function index()
     {
-        return Book::query()->paginate(10);
+        return Book::all();
     }
 
     public function show(Book $book)
     {
-        return
+        return response()->json(
             [
                 'book' => $book,
-                'path' => Storage::url('books/' . $book->path)
-            ];
+                'path' => Storage::url('books/' . $book->path),
+                'image' => Storage::url('books/' . $book->image),
+            ]);
     }
 
     public function store(Request $request)
@@ -33,13 +34,16 @@ class BookController extends Controller
             'author' => 'required|min:3|max:20',
             'translator' => 'min:3|max:20',
             'description' => 'min:4|max:500',
-            'book' => 'required|mimes:pdf|max:10000'
+            'book' => 'required|mimes:pdf|max:10000',
+            'image' => 'required|image|max:10000',
         ]);
         if ($validated_data->fails())
-            return response()->json($validated_data->errors());
+            return response()->json(['error' => true, 'data'=>$validated_data->errors()]);
 
         $BookName = date('Ymdhis') . rand(100, 999) . '.pdf';
+        $imageName = date('Ymdhis') . rand(100, 999) . '.jpg';
         Storage::putFileAs('books', $request->file('book'), $BookName);
+        Storage::putFileAs('books', $request->file('image'), $imageName);
 
         Book::query()->create([
             'title' => $request->title,
@@ -47,9 +51,10 @@ class BookController extends Controller
             'translator' => $request->translator ?? null,
             'description' => $request->description ?? null,
             'path' => $BookName,
+            'image' => $imageName
         ]);
 
-        return response()->json(['data' => 'ذخیره شد']);
+        return response()->json(['error' => false,'data' => 'ذخیره شد']);
     }
 
     public function update(Book $book, Request $request)
@@ -59,10 +64,11 @@ class BookController extends Controller
             'author' => 'required|min:3|max:20',
             'translator' => 'min:3|max:20',
             'description' => 'min:4|max:500',
+            'image' => 'image|max:10000',
             'book' => 'mimes:pdf|max:10000'
         ]);
         if ($validated_data->fails())
-            return response()->json($validated_data->errors());
+            return response()->json(['error'=>true,'data'=>$validated_data->errors()]);
 
         if ($request->hasFile('book')) {
             Storage::delete('books/' . $book->path);
@@ -72,15 +78,24 @@ class BookController extends Controller
             $BookName = $book->path;
         }
 
+        if ($request->hasFile('image')) {
+            Storage::delete('books/' . $book->image);
+            $imageName = date('Ymdhis') . rand(100, 999) . '.jpg';
+            Storage::putFileAs('books', $request->file('image'), $imageName);
+        } else {
+            $imageName = $book->image;
+        }
+
         Book::query()->create([
             'title' => $request->title,
             'author' => $request->author,
             'translator' => $request->translator ?? null,
             'description' => $request->description ?? null,
             'path' => $BookName,
+            'image' => $imageName,
         ]);
 
-        return response()->json(['data' => 'ویرایش شد']);
+        return response()->json(['error' => false,'data' => 'ویرایش شد']);
 
     }
 
@@ -88,6 +103,7 @@ class BookController extends Controller
     {
         $book->delete();
         Storage::delete('books/' . $book->path);
-        return response()->json(['data' => 'حذف شد']);
+        Storage::delete('books/' . $book->image);
+        return response()->json(['error' =>false,'data' => 'حذف شد']);
     }
 }

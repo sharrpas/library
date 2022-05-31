@@ -21,7 +21,8 @@ class LibraryController extends Controller
         return response()->json(
             [
                 'book' => $book,
-                'path' => Storage::url('books/' . $book->path)
+                'path' => Storage::url('books/' . $book->path),
+                'image' => Storage::url('books/' . $book->image),
             ]);
     }
 
@@ -30,13 +31,13 @@ class LibraryController extends Controller
         $user =Auth::user();
         $user->books()->detach($book->id);
         $user->books()->attach($book->id);
-        return response()->json('به کتابخانه شما افزوده شد');
+        return response()->json(['data'=>'به کتابخانه شما افزوده شد']);
     }
 
     public function destroy(Book $book)
     {
         $user =Auth::user();
         $user->books()->detach($book->id);
-        return response()->json('از کتابخانه شما حذف شد');
+        return response()->json(['data' =>'از کتابخانه شما حذف شد']);
     }
 }
