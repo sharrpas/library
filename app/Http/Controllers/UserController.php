@@ -19,7 +19,7 @@ class UserController extends Controller
             'password' => [Password::required(), Password::min(4)->numbers(), 'confirmed'],
         ]);
         if ($validated_data->fails())
-            return response()->json(['error' => true,'data' => $validated_data->errors()]);
+            return response()->json(['error' => true, 'data' => $validated_data->errors()]);
 
         $user = new User();
         $user->name = $request->name;
@@ -27,7 +27,7 @@ class UserController extends Controller
         $user->password = Hash::make($request->password);
         $user->save();
 
-        return response()->json(['error' => false, 'data' =>'ثبت نام شما با موفقیت انجام شد']);
+        return response()->json(['error' => false, 'data' => 'ثبت نام شما با موفقیت انجام شد']);
 
     }
 
@@ -39,12 +39,13 @@ class UserController extends Controller
             'password' => 'required'
         ]);
         if ($validated_data->fails())
-            return response()->json($validated_data->errors());
+            return response()->json(['error' => true, 'data' => $validated_data->errors()]);
 
 
         if (!$user = User::query()->where('email', $request->email)->first()) {
             return response()->json([
-                "message" => "یوزر پیدا نشد"
+                'error' => true,
+                "data" => ["یوزر پیدا نشد"]
             ]);
         }
 
@@ -52,10 +53,11 @@ class UserController extends Controller
 
         if ($user && $pass_check) {
             return response()->json([
+                'error' => false,
                 'token' => $user->createToken('token_base_name')->plainTextToken
             ]);
         } else {
-            return response()->json(['نام کاربری یا رمز عبو اشتباه است']);
+            return response()->json(['error' => true, 'نام کاربری یا رمز عبو اشتباه است']);
         }
 
     }
@@ -79,7 +81,7 @@ class UserController extends Controller
             'new_pass' => 'required',
         ]);
         if ($validated_data->fails())
-            return response()->json($validated_data->errors());
+            return response()->json(['error' => true, 'data' => $validated_data->errors()]);
 
 
         $pass_check = Hash::check($request->old_pass, User::query()->where('id', '=', auth()->id())->firstOrFail()->password);
@@ -87,9 +89,9 @@ class UserController extends Controller
             User::query()->where('id', '=', auth()->id())->update([
                 'password' => Hash::make($request->new_pass)
             ]);
-            return response()->json('رمز شما تغییر یافت به  ' . $request->new_pass);
+            return response()->json(['error' => false, 'data' => 'رمز شما تغییر یافت به  ' . $request->new_pass]);
         } else {
-            return response()->json('رمز اشتباه است');
+            return response()->json(['error' => true, 'data' => 'رمز اشتباه است']);
         }
     }
 }
