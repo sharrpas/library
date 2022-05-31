@@ -19,7 +19,7 @@ class UserController extends Controller
             'password' => [Password::required(), Password::min(4)->numbers(), 'confirmed'],
         ]);
         if ($validated_data->fails())
-            return response()->json($validated_data->errors());
+            return response()->json(['error' => true,'data' => $validated_data->errors()]);
 
         $user = new User();
         $user->name = $request->name;
@@ -27,7 +27,7 @@ class UserController extends Controller
         $user->password = Hash::make($request->password);
         $user->save();
 
-        return response()->json('ثبت نام شما با موفقیت انجام شد');
+        return response()->json(['error' => false, 'data' =>'ثبت نام شما با موفقیت انجام شد']);
 
     }
 
@@ -55,7 +55,7 @@ class UserController extends Controller
                 'token' => $user->createToken('token_base_name')->plainTextToken
             ]);
         } else {
-            return response()->json([ 'نام کاربری یا رمز عبو اشتباه است']);
+            return response()->json(['نام کاربری یا رمز عبو اشتباه است']);
         }
 
     }
