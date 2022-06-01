@@ -52,8 +52,11 @@ class UserController extends Controller
         $pass_check = Hash::check($request->password, User::query()->where('email', $request->email)->firstOrFail()->password);
 
         if ($user && $pass_check) {
+            $isAdmin = false;
+            if ($user->email == 'admin@gmail.com') $isAdmin = true;
             return response()->json([
                 'error' => false,
+                'isAdmin' => $isAdmin,
                 'data' => 'با موفقیت وارد شدید',
                 'token' => $user->createToken('token_base_name')->plainTextToken
             ]);
@@ -71,7 +74,7 @@ class UserController extends Controller
 
         $user->tokens()->delete();
 
-        return response()->json(['data'=>'logged out']);
+        return response()->json(['data' => 'logged out']);
     }
 
 
