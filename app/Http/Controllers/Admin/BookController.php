@@ -41,7 +41,7 @@ class BookController extends Controller
             return response()->json(['error' => true, 'data'=>$validated_data->errors()]);
 
         $BookName = date('Ymdhis') . rand(100, 999) . '.pdf';
-        $imageName = date('Ymdhis') . rand(100, 999) . '.jpg';
+        $imageName = date('Ymdhis') . rand(100, 999) . '.png';
         Storage::putFileAs('books', $request->file('book'), $BookName);
         Storage::putFileAs('books', $request->file('image'), $imageName);
 
