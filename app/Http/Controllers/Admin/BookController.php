@@ -14,7 +14,7 @@ class BookController extends Controller
 {
     public function index()
     {
-        return Book::all();
+        return response()->json( Book::all());
     }
 
     public function show(Book $book)
@@ -25,6 +25,7 @@ class BookController extends Controller
                 'path' => Storage::url('books/' . $book->path),
                 'image' => Storage::url('books/' . $book->image),
             ]);
+        //todo
     }
 
     public function store(Request $request)
@@ -50,8 +51,9 @@ class BookController extends Controller
             'author' => $request->author,
             'translator' => $request->translator ?? null,
             'description' => $request->description ?? null,
-            'path' => $BookName,
-            'image' => $imageName
+            'path' => Storage::url('books/' . $BookName),
+            'image' => Storage::url('books/' . $imageName)
+
         ]);
 
         return response()->json(['error' => false,'data' => 'ذخیره شد']);
