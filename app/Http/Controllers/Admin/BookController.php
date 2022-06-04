@@ -67,8 +67,7 @@ class BookController extends Controller
         if ($validated_data->fails())
             return response()->json(['error'=>true,'data'=>$validated_data->errors()]);
 
-
-        $book::query()->update([
+        $book->update([
             'title' => $request->title,
             'author' => $request->author,
             'translator' => $request->translator ?? null,
