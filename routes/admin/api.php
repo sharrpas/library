@@ -23,7 +23,7 @@ Route::prefix('admin')->group(function () {
     Route::get('book/{book}',[BookController::class, 'show'])->middleware(['auth:sanctum','admin.auth:sanctum']);
     Route::post('book',[BookController::class, 'store'])->middleware(['auth:sanctum','admin.auth:sanctum']);
     Route::put('book/{book}',[BookController::class, 'update'])->middleware(['auth:sanctum','admin.auth:sanctum']);
-    Route::delete('book/{book}',[BookController::class, 'destroy'])->middleware(['auth:sanctum','admin.auth:sanctum']);
+    Route::post('delete/book/{book}',[BookController::class, 'destroy'])->middleware(['auth:sanctum','admin.auth:sanctum']);
 
 
 });

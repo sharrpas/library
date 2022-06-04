@@ -18,9 +18,10 @@ class LibraryController extends Controller
 
     public function show(Book $book)
     {
-        return response()->json($book);
+        return response()->json([
+            'data' =>$book
+        ]);
     }
-
 
     public function store(Book $book)
     {

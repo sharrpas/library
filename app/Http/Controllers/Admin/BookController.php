@@ -20,7 +20,9 @@ class BookController extends Controller
 
     public function show(Book $book)
     {
-        return response()->json($book);
+        return response()->json([
+            'data' =>$book
+        ]);
     }
 
     public function store(Request $request)
@@ -98,6 +100,7 @@ class BookController extends Controller
 
     public function destroy(Book $book)
     {
+        $book->users()->detach();
         $book->delete();
         Storage::delete('books/' . $book->path);
         Storage::delete('books/' . $book->image);
