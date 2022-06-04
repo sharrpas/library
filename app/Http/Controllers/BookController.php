@@ -10,7 +10,7 @@ class BookController extends Controller
 {
     public function index()
     {
-        $books = Book::query()->select(['id', 'title', 'author', 'translator', 'image'])->get();
+        $books = Book::query()->select(['id', 'title', 'author', 'description', 'image'])->get();
         return response()->json($books);
     }
 
