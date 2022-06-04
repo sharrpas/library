@@ -85,7 +85,7 @@ class BookController extends Controller
             $imageName = $book->image;
         }
 
-        Book::query()->create([
+        Book::query()->update([
             'title' => $request->title,
             'author' => $request->author,
             'translator' => $request->translator ?? null,
