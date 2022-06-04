@@ -63,35 +63,16 @@ class BookController extends Controller
             'author' => 'required|min:3|max:20',
             'translator' => 'min:3|max:20',
             'description' => 'min:4|max:500',
-            'image' => 'image|max:10000',
-            'book' => 'mimes:pdf|max:10000'
         ]);
         if ($validated_data->fails())
             return response()->json(['error'=>true,'data'=>$validated_data->errors()]);
 
-        if ($request->hasFile('book')) {
-            Storage::delete('books/' . $book->path);
-            $BookName = date('Ymdhis') . rand(100, 999) . '.pdf';
-            Storage::putFileAs('books', $request->file('book'), $BookName);
-        } else {
-            $BookName = $book->path;
-        }
 
-        if ($request->hasFile('image')) {
-            Storage::delete('books/' . $book->image);
-            $imageName = date('Ymdhis') . rand(100, 999) . '.jpg';
-            Storage::putFileAs('books', $request->file('image'), $imageName);
-        } else {
-            $imageName = $book->image;
-        }
-
-        Book::query()->update([
+        $book::query()->update([
             'title' => $request->title,
             'author' => $request->author,
             'translator' => $request->translator ?? null,
             'description' => $request->description ?? null,
-            'path' => $BookName,
-            'image' => $imageName,
         ]);
 
         return response()->json(['error' => false,'data' => 'ویرایش شد']);
