@@ -22,5 +22,11 @@ class Book extends Model
         );
     }
 
+    public function path(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => Storage::url('books/' .$value) ,
+        );
+    }
 
 }
