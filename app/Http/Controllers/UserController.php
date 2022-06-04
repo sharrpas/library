@@ -98,4 +98,12 @@ class UserController extends Controller
             return response()->json(['error' => true, 'data' => 'رمز اشتباه است']);
         }
     }
+
+    public function info()
+    {
+        $user = auth()->user();
+        return response()->json([
+            'data' => $user
+        ]);
+    }
 }

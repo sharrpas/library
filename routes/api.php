@@ -24,6 +24,7 @@ Route::post('/signup', [UserController::class, 'signup'])->name('signup');
 Route::post('/login', [UserController::class, 'login'])->name('login');
 Route::post('/logout',[UserController::class,'logout'])->middleware('auth:sanctum')->name('logout');
 Route::post('/change/pass',[UserController::class, 'changePass'])->middleware('auth:sanctum')->name('changePass');
+Route::get('/info',[UserController::class, 'info'])->middleware('auth:sanctum');
 
 //library
 Route::get('library',[LibraryController::class,'index'])->middleware('auth:sanctum');
