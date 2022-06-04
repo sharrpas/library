@@ -29,7 +29,7 @@ Route::post('/change/pass',[UserController::class, 'changePass'])->middleware('a
 Route::get('library',[LibraryController::class,'index'])->middleware('auth:sanctum');
 Route::get('/book/{book}',[LibraryController::class,'show'])->middleware('auth:sanctum');
 Route::post('/book/{book}',[LibraryController::class,'store'])->middleware('auth:sanctum');
-Route::delete('/book/{book}',[LibraryController::class,'destroy'])->middleware('auth:sanctum');
+Route::post('/delete/book/{book}',[LibraryController::class,'destroy'])->middleware('auth:sanctum');
 
 //books
 Route::get('/books',[BookController::class, 'index']);
