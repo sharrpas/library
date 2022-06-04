@@ -14,18 +14,13 @@ class BookController extends Controller
 {
     public function index()
     {
-        return response()->json( Book::all());
+        $books = Book::query()->select(['id','title','author','translator','image'])->get();
+        return response()->json($books);
     }
 
     public function show(Book $book)
     {
-        return response()->json(
-            [
-                'book' => $book,
-                'path' => Storage::url('books/' . $book->path),
-                'image' => Storage::url('books/' . $book->image),
-            ]);
-        //todo
+        return response()->json($book);
     }
 
     public function store(Request $request)
@@ -51,8 +46,8 @@ class BookController extends Controller
             'author' => $request->author,
             'translator' => $request->translator ?? null,
             'description' => $request->description ?? null,
-            'path' => Storage::url('books/' . $BookName),
-            'image' => Storage::url('books/' . $imageName)
+            'path' =>  $BookName,
+            'image' => $imageName
 
         ]);
 
