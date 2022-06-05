@@ -81,19 +81,19 @@ class UserController extends Controller
     public function changePass(Request $request)
     {
         $validated_data = Validator::make($request->all(), [
-            'old_pass' => 'required',
-            'new_pass' => 'required',
+            'oldpass' => 'required',
+            'newpass' => 'required',
         ]);
         if ($validated_data->fails())
             return response()->json(['error' => true, 'data' => $validated_data->errors()]);
 
 
-        $pass_check = Hash::check($request->old_pass, User::query()->where('id', '=', auth()->id())->firstOrFail()->password);
+        $pass_check = Hash::check($request->oldpass, User::query()->where('id', '=', auth()->id())->firstOrFail()->password);
         if ($pass_check) {
             User::query()->where('id', '=', auth()->id())->update([
-                'password' => Hash::make($request->new_pass)
+                'password' => Hash::make($request->newpass)
             ]);
-            return response()->json(['error' => false, 'data' => 'رمز شما تغییر یافت به  ' . $request->new_pass]);
+            return response()->json(['error' => false, 'data' => 'رمز شما تغییر یافت به  ' . $request->newpass]);
         } else {
             return response()->json(['error' => true, 'data' => 'رمز اشتباه است']);
         }
