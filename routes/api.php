@@ -34,6 +34,7 @@ Route::post('/delete/book/{book}',[LibraryController::class,'destroy'])->middlew
 
 //books
 Route::get('/books',[BookController::class, 'index']);
+Route::get('/books/search/{search}',[BookController::class, 'search']);
 
 //todo: search
 

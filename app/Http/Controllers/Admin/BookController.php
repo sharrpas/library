@@ -14,7 +14,7 @@ class BookController extends Controller
 {
     public function index()
     {
-        $books = Book::query()->select(['id','title','author','description','image'])->paginate(10);
+        $books = Book::query()->select(['id','title','author','description','image'])->simplePaginate(10);
         return response()->json($books);
     }
 
