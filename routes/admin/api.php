@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\BookController;
+use App\Http\Controllers\Admin\InformationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -25,5 +26,5 @@ Route::prefix('admin')->group(function () {
     Route::post('/update/book/{book}',[BookController::class, 'update'])->middleware(['auth:sanctum','admin.auth:sanctum']);
     Route::post('delete/book/{book}',[BookController::class, 'destroy'])->middleware(['auth:sanctum','admin.auth:sanctum']);
 
-
+    Route::post('about',[InformationController::class,'about'])->middleware(['auth:sanctum','admin.auth:sanctum']);
 });
