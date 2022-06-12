@@ -9,5 +9,5 @@ class About extends Model
 {
     use HasFactory;
     protected $table = 'aboutes';
-    //todo todo todo todo todo
+    protected $guarded = [];
 }
