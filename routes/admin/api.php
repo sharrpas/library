@@ -27,4 +27,5 @@ Route::prefix('admin')->group(function () {
     Route::post('delete/book/{book}',[BookController::class, 'destroy'])->middleware(['auth:sanctum','admin.auth:sanctum']);
 
     Route::post('about',[InformationController::class,'about'])->middleware(['auth:sanctum','admin.auth:sanctum']);
+    Route::post('contact',[InformationController::class,'contact'])->middleware(['auth:sanctum','admin.auth:sanctum']);
 });

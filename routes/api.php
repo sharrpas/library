@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\InformationController;
 use App\Http\Controllers\LibraryController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -36,5 +37,8 @@ Route::post('/delete/book/{book}',[LibraryController::class,'destroy'])->middlew
 Route::get('/books',[BookController::class, 'index']);
 Route::get('/books/search/{search}',[BookController::class, 'search']);
 
+//information
+Route::get('about',[InformationController::class,'about']);
+Route::get('contact',[InformationController::class,'contact']);
 
 
