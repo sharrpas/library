@@ -16,6 +16,7 @@ class InformationController extends Controller
 
     public function contact()
     {
-        return response()->json(['error' => false, 'data' => Contact::query()->select('title','text')->first()]);
+        return response()->json(['error' => false, 'data' => Contact::query()
+            ->select('title','text','email','phone','telegram','links')->first()]);
     }
 }

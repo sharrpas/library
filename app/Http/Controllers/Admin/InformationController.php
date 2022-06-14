@@ -26,13 +26,14 @@ class InformationController extends Controller
 
     public function contact(Request $request)
     {
-        $validated_data = Validator::make($request->all(), [
-            'text' => 'required',
-        ]);
-        if ($validated_data->fails())
-            return response()->json(['error' => true, 'data'=>$validated_data->errors()]);
 
-        Contact::query()->updateOrCreate(['title' => 'Contact Us'],['text' => $request->text]);
+        Contact::query()->updateOrCreate(['title' =>'Contact Us'],[
+            'email' =>$request->email,
+            'phone' =>$request->phone,
+            'telegram' =>$request->telegram,
+            'links' =>$request->links,
+            'text' => $request->text ?? ' '
+        ]);
 
         return response()->json(['error' => false, 'data' => 'تماس با ما ثبت شد']);
 
